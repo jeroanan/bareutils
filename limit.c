@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
   prog = argv[0];
   str = argv[1];
   nlines = get_number_of_lines(str);
+  limit_stdin(nlines);
 
   exit(EXIT_SUCCESS);
 }
@@ -29,7 +30,6 @@ int get_number_of_lines(char* strIn) {
   long nlines;
 
   nlines = strtol(strIn, &endptr, 10);
-  limit_stdin(nlines);
 
   errno = 0;
 
