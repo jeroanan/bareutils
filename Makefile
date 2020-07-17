@@ -1,9 +1,15 @@
 CC=tcc
 
-all: bin/mycat bin/limit bin/true bin/false
+all: bin/mycat bin/echo bin/false bin/limit bin/true 
 
 bin/mycat: cat.c
 	$(CC) -o bin/mycat cat.c
+
+bin/echo: echo.c
+	$(CC) -o bin/echo echo.c
+
+bin/false: false.c
+	$(CC) -o bin/false false.c
 
 bin/limit: limit.c
 	$(CC) -o bin/limit limit.c
@@ -11,8 +17,6 @@ bin/limit: limit.c
 bin/true: true.c
 	$(CC) -o bin/true true.c
 
-bin/false: false.c
-	$(CC) -o bin/false false.c
 
 $(shell mkdir -p bin)
 
