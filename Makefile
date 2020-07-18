@@ -17,6 +17,8 @@ bin/limit: limit.c
 bin/true: true.c
 	$(CC) -o bin/true true.c
 
+clean: 
+	rm -rf bin/
 
 $(shell mkdir -p bin)
 
