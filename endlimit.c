@@ -21,9 +21,8 @@ int main(int argc, char* argv[]) {
 
   prog = argv[0];
   str = argv[1];
-  nlines = get_number_of_lines_in_file(str);
+  nlines = abs(get_number_of_lines_in_file(str));
   limit_stdin(nlines);
-
 }
 
 int get_number_of_lines_in_file(char* strIn) {
@@ -49,36 +48,43 @@ int get_number_of_lines_in_file(char* strIn) {
 }
 
 void limit_stdin(int number_of_lines) {
-  int i,x;
+  int i,x,c;
   int number_to_print;
   ssize_t read;
   char* line = NULL;
   size_t len = 0;
   char** file_content;
   
-  file_content = malloc(1 * sizeof(char*));
+  file_content = malloc(number_of_lines * sizeof(char*));
 
   i=0;
+  c=0;
   for (1;;) {
     if ((read = getline(&line, &len, stdin)==-1)) {
       break;
     }
     
-    file_content = (char**) realloc(file_content, ((i+1) * sizeof(char*)));
-    file_content[i] = malloc(strlen(line) *sizeof(char*));
+    file_content[c] = malloc(strlen(line) *sizeof(char*));
+    strcpy(file_content[c], line);
 
-    strcpy(file_content[i], line);
+    if (c<number_of_lines) {
+      c++;
+    } else {
+      for (x=1;x<=c;x++) {
+        file_content[x-1] = (char*) realloc(file_content[x-1], strlen(file_content[x]) * sizeof(char*));
+        strcpy(file_content[x-1], file_content[x]);
+      }
+    }
     i++;
   }
 
   number_to_print = number_of_lines<i ? number_of_lines : i;
-  int start_point = i-number_to_print;
 
-  for (x=start_point;x<i;x++) {
+  for (x=0;x<number_to_print;x++) {
     printf("%s", file_content[x]);
   }
 
-  for(x=0; x<i; x++) {
+  for(x=0; x<c; x++) {
     free(file_content[x]);
   }
 
