@@ -72,9 +72,12 @@ void limit_stdin(int number_of_lines) {
   }
 
   number_to_print = number_of_lines<i ? number_of_lines : i;
-  for (x=0;x<number_to_print;x++) {
-    printf("Line %d: %s", x, file_content[i-1-x]);
+  int start_point = i-number_to_print;
+
+  for (x=start_point;x<i;x++) {
+    printf("%s", file_content[x]);
   }
+
   for(x=0; x<i; x++) {
     free(file_content[x]);
   }
