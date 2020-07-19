@@ -4,14 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-char* prog;
-
-int get_number_of_lines(char* strIn);
-int get_number_of_lines_in_file(char* strIn);
 void limit_stdin(int number_of_lines);
+int string_to_number(char* strIn, long* n);
 
 int main(int argc, char* argv[]) {
   char *str;
+  int result;
   long nlines;
 
   if (argc!=2) {
@@ -19,21 +17,25 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  prog = argv[0];
   str = argv[1];
-  nlines = abs(get_number_of_lines_in_file(str));
+
+  if (string_to_number(str, &nlines)) {
+    fprintf(stderr, "Invalid number of lines: %s\n", str);
+    exit(EXIT_FAILURE);
+  }
+
   limit_stdin(nlines);
 }
 
-int string_to_number(char* strIn, int n) {
+int string_to_number(char* strIn, long* n) {
   char *endptr;
 
-  n = strtol(strIn, &endptr, 10);
+  *n = strtol(strIn, &endptr, 10);
 
   errno = 0;
 
-  if ((errno == ERANGE && (n == LONG_MAX || n == LONG_MIN))
-      || (errno !=0 && n == 0)) {
+  if ((errno == ERANGE && (*n == LONG_MAX || *n == LONG_MIN))
+      || (errno !=0 && *n == 0)) {
     return 1;
   }
 
@@ -42,28 +44,6 @@ int string_to_number(char* strIn, int n) {
   }
 
   return 0;
-}
-
-int get_number_of_lines_in_file(char* strIn) {
-  char *endptr;
-  long nlines;
-
-  nlines = strtol(strIn, &endptr, 10);
-
-  errno = 0;
-
-  if ((errno == ERANGE && (nlines == LONG_MAX || nlines == LONG_MIN))
-      || (errno !=0 && nlines == 0)) {
-    perror("strtol");
-    exit(EXIT_FAILURE);
-  }
-
-  if (endptr==strIn || *endptr!= '\0') {
-    fprintf(stderr, "%s: %s: not a valid number of lines\n", prog, strIn);
-    exit(EXIT_FAILURE);
-  }
-
-  return nlines;
 }
 
 void limit_stdin(int number_of_lines) {
