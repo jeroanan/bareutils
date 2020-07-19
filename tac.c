@@ -27,4 +27,6 @@ int main(void) {
     free(buffer[j]);
   }
   free(buffer);
+
+  return 0;
 }
