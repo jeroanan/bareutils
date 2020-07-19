@@ -1,9 +1,7 @@
-#include <errno.h>
-#include <limits.h>
-#include <stdio.h>
+#include<stdio.h>
 #include <stdlib.h>
 
-char* prog;
+#include "inc/string_to_number.h";
 
 int get_number_of_lines(char* strIn);
 void limit_stdin(int number_of_lines);
@@ -17,34 +15,16 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  prog = argv[0];
   str = argv[1];
-  nlines = get_number_of_lines(str);
+  
+  if (string_to_number(str, &nlines)) {
+    fprintf(stderr, "Invalid number of lines: %s\n", str);
+    exit(EXIT_FAILURE);
+  }
+
   limit_stdin(nlines);
 
   exit(EXIT_SUCCESS);
-}
-
-int get_number_of_lines(char* strIn) {
-  char *endptr;
-  long nlines;
-
-  nlines = strtol(strIn, &endptr, 10);
-
-  errno = 0;
-
-  if ((errno == ERANGE && (nlines == LONG_MAX || nlines == LONG_MIN))
-      || (errno !=0 && nlines == 0)) {
-    perror("strtol");
-    exit(EXIT_FAILURE);
-  }
-
-  if (endptr==strIn || *endptr!= '\0') {
-    fprintf(stderr, "%s: %s: not a valid number of lines\n", prog, strIn);
-    exit(EXIT_FAILURE);
-  }
-
-  return nlines;
 }
 
 void limit_stdin(int number_of_lines) {

@@ -1,8 +1,8 @@
-#include <errno.h>
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "inc/string_to_number.h";
 
 void limit_stdin(int number_of_lines);
 int string_to_number(char* strIn, long* n);
@@ -25,25 +25,6 @@ int main(int argc, char* argv[]) {
   }
 
   limit_stdin(nlines);
-}
-
-int string_to_number(char* strIn, long* n) {
-  char *endptr;
-
-  *n = strtol(strIn, &endptr, 10);
-
-  errno = 0;
-
-  if ((errno == ERANGE && (*n == LONG_MAX || *n == LONG_MIN))
-      || (errno !=0 && *n == 0)) {
-    return 1;
-  }
-
-  if (endptr==strIn || *endptr!= '\0') {
-    return 1;
-  }
-
-  return 0;
 }
 
 void limit_stdin(int number_of_lines) {
