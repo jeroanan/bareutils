@@ -25,6 +25,25 @@ int main(int argc, char* argv[]) {
   limit_stdin(nlines);
 }
 
+int string_to_number(char* strIn, int n) {
+  char *endptr;
+
+  n = strtol(strIn, &endptr, 10);
+
+  errno = 0;
+
+  if ((errno == ERANGE && (n == LONG_MAX || n == LONG_MIN))
+      || (errno !=0 && n == 0)) {
+    return 1;
+  }
+
+  if (endptr==strIn || *endptr!= '\0') {
+    return 1;
+  }
+
+  return 0;
+}
+
 int get_number_of_lines_in_file(char* strIn) {
   char *endptr;
   long nlines;
