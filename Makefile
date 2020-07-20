@@ -2,7 +2,16 @@ CC=tcc
 INCSRC=$(wildcard inc/*.c)
 OBJECTS=$(pathsubt %.c, %.o, $(INCSRC))
 
-all: bin/mycat bin/echo bin/endlimit bin/false bin/limit bin/ls bin/nl bin/tac bin/true 
+all: bin/mycat \
+	bin/echo \
+	bin/endlimit \
+	bin/false \
+	bin/limit \
+	bin/ls \
+	bin/nl \
+	bin/tac \
+	bin/true \
+	bin/whoami
 
 bin/mycat: cat.c
 	$(CC) -o bin/mycat cat.c
@@ -36,6 +45,9 @@ bin/tac: tac.c
 
 bin/true: true.c
 	$(CC) -o bin/true true.c
+
+bin/whoami: whoami.c
+	$(CC) -o bin/whoami whoami.c
 
 obj/string_to_number.o: inc/string_to_number.c
 	$(CC) -c -o obj/string_to_number.o inc/string_to_number.c
