@@ -6,6 +6,7 @@ all: bin/mycat \
 	bin/echo \
 	bin/endlimit \
 	bin/false \
+	bin/id \
 	bin/limit \
 	bin/ls \
 	bin/nl \
@@ -27,6 +28,9 @@ obj/endlimit.o: endlimit.c
 
 bin/false: false.c
 	$(CC) -o bin/false false.c
+
+bin/id: id.c
+	$(CC) -o bin/id id.c
 
 bin/limit: obj/limit.o obj/string_to_number.o
 	$(CC) -o bin/limit obj/limit.o obj/string_to_number.o
