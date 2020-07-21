@@ -1,6 +1,7 @@
 CC=tcc
 INCSRC=$(wildcard inc/*.c)
 OBJECTS=$(pathsubt %.c, %.o, $(INCSRC))
+SRCDIR=src
 
 all: bin/mycat \
 	bin/echo \
@@ -14,47 +15,47 @@ all: bin/mycat \
 	bin/true \
 	bin/whoami
 
-bin/mycat: cat.c
-	$(CC) -o bin/mycat cat.c
+bin/mycat: $(SRCDIR)/cat.c
+	$(CC) -o bin/mycat $(SRCDIR)/cat.c
 
-bin/echo: echo.c
-	$(CC) -o bin/echo echo.c
+bin/echo: $(SRCDIR)/echo.c
+	$(CC) -o bin/echo $(SRCDIR)/echo.c
 
 bin/endlimit: obj/endlimit.o obj/string_to_number.o
 	$(CC) -o bin/endlimit obj/endlimit.o obj/string_to_number.o
 
-obj/endlimit.o: endlimit.c
-	$(CC) -c -o obj/endlimit.o endlimit.c
+obj/endlimit.o: $(SRCDIR)/endlimit.c
+	$(CC) -c -o obj/endlimit.o $(SRCDIR)/endlimit.c
 
-bin/false: false.c
-	$(CC) -o bin/false false.c
+bin/false: $(SRCDIR)/false.c
+	$(CC) -o bin/false $(SRCDIR)/false.c
 
-bin/id: id.c
-	$(CC) -o bin/id id.c
+bin/id: $(SRCDIR)/id.c
+	$(CC) -o bin/id $(SRCDIR)/id.c
 
 bin/limit: obj/limit.o obj/string_to_number.o
 	$(CC) -o bin/limit obj/limit.o obj/string_to_number.o
 
-obj/limit.o: limit.c
-	$(CC) -c -o obj/limit.o limit.c
+obj/limit.o: $(SRCDIR)/limit.c
+	$(CC) -c -o obj/limit.o $(SRCDIR)/limit.c
 
-bin/ls: ls.c
-	$(CC) -o bin/ls ls.c
+bin/ls: $(SRCDIR)/ls.c
+	$(CC) -o bin/ls $(SRCDIR)/ls.c
 
-bin/nl: nl.c
-	$(CC) -o bin/nl nl.c
+bin/nl: $(SRCDIR)/nl.c
+	$(CC) -o bin/nl $(SRCDIR)/nl.c
 
-bin/tac: tac.c
-	$(CC) -o bin/tac tac.c
+bin/tac: $(SRCDIR)/tac.c
+	$(CC) -o bin/tac $(SRCDIR)/tac.c
 
-bin/true: true.c
-	$(CC) -o bin/true true.c
+bin/true: $(SRCDIR)/true.c
+	$(CC) -o bin/true $(SRCDIR)/true.c
 
-bin/whoami: whoami.c
-	$(CC) -o bin/whoami whoami.c
+bin/whoami: $(SRCDIR)/whoami.c
+	$(CC) -o bin/whoami $(SRCDIR)/whoami.c
 
-obj/string_to_number.o: inc/string_to_number.c
-	$(CC) -c -o obj/string_to_number.o inc/string_to_number.c
+obj/string_to_number.o: $(SRCDIR)/inc/string_to_number.c
+	$(CC) -c -o obj/string_to_number.o $(SRCDIR)/inc/string_to_number.c
 
 clean: 
 	rm -rf bin/ obj/
