@@ -10,6 +10,7 @@ all: bin/mycat \
 	bin/id \
 	bin/limit \
 	bin/ls \
+	bin/md5sum \
 	bin/nl \
 	bin/tac \
 	bin/true \
@@ -42,6 +43,15 @@ obj/limit.o: $(SRCDIR)/limit.c
 bin/ls: $(SRCDIR)/ls.c
 	$(CC) -o bin/ls $(SRCDIR)/ls.c
 
+bin/md5sum: obj/md5sum.o obj/WjCryptLib_Md5.o
+	$(CC) -o bin/md5sum obj/md5sum.o obj/WjCryptLib_Md5.o
+
+obj/md5sum.o: $(SRCDIR)/md5sum.c
+	$(CC) -c -o obj/md5sum.o $(SRCDIR)/md5sum.c
+
+obj/WjCryptLib_Md5.o: lib/WjCryptLib/WjCryptLib_Md5.c
+	$(CC) -c -o obj/WjCryptLib_Md5.o lib/WjCryptLib/WjCryptLib_Md5.c
+
 bin/nl: $(SRCDIR)/nl.c
 	$(CC) -o bin/nl $(SRCDIR)/nl.c
 
@@ -56,6 +66,7 @@ bin/whoami: $(SRCDIR)/whoami.c
 
 obj/string_to_number.o: $(SRCDIR)/inc/string_to_number.c
 	$(CC) -c -o obj/string_to_number.o $(SRCDIR)/inc/string_to_number.c
+
 
 clean: 
 	rm -rf bin/ obj/

@@ -1,0 +1,6 @@
+The code in this directory was grabbed from 
+https://github.com/WaterJuice/WjCryptLib/. 
+
+WjCryptLib is licensed in the public domain. My thanks to WaterJuice. I also 
+looked at the projects/ folder in that project for a quick getting started for
+this lib when writing my md5 program
