@@ -7,6 +7,7 @@ all: bin/mycat \
 	bin/echo \
 	bin/endlimit \
 	bin/false \
+	bin/groups \
 	bin/id \
 	bin/limit \
 	bin/ls \
@@ -30,6 +31,9 @@ obj/endlimit.o: $(SRCDIR)/endlimit.c
 
 bin/false: $(SRCDIR)/false.c
 	$(CC) -o bin/false $(SRCDIR)/false.c
+
+bin/groups: $(SRCDIR)/groups.c
+	$(CC) -o bin/groups $(SRCDIR)/groups.c
 
 bin/id: $(SRCDIR)/id.c
 	$(CC) -o bin/id $(SRCDIR)/id.c
