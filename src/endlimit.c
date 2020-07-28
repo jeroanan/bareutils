@@ -3,14 +3,17 @@
 #include <string.h>
 
 #include "inc/string_to_number.h";
+#include "inc/process_stdin.h";
 
-void limit_stdin(int number_of_lines);
-int string_to_number(char* strIn, long* n);
+long nlines;
+int c, lines_read;
+char** file_content;
+
+void process_line(char *line, size_t len);
+void read_finished(void);
 
 int main(int argc, char* argv[]) {
   char *str;
-  int result;
-  long nlines;
 
   if (argc!=2) {
     fprintf(stderr, "%s: Usage: %s NUMBER_OF_LINES\n", argv[0], argv[0]);
@@ -24,41 +27,33 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  limit_stdin(nlines);
+  file_content = malloc(nlines * sizeof(char*));
+  c=0;
+  process_stdin(process_line, read_finished);
+  //limit_stdin(nlines);
 }
 
-void limit_stdin(int number_of_lines) {
-  int i,x,c;
-  int number_to_print;
-  ssize_t read;
-  char* line = NULL;
-  size_t len = 0;
-  char** file_content;
-  
-  file_content = malloc(number_of_lines * sizeof(char*));
+void process_line(char *line, size_t len) {
+  int x;
 
-  i=0;
-  c=0;
-  for (1;;) {
-    if ((read = getline(&line, &len, stdin)==-1)) {
-      break;
-    }
-    
-    file_content[c] = malloc(strlen(line) *sizeof(char*));
-    strcpy(file_content[c], line);
+  file_content[c] = malloc(strlen(line) *sizeof(char*));
+  strcpy(file_content[c], line);
 
-    if (c<number_of_lines) {
-      c++;
-    } else {
-      for (x=1;x<=c;x++) {
-        file_content[x-1] = (char*) realloc(file_content[x-1], strlen(file_content[x]) * sizeof(char*));
-        strcpy(file_content[x-1], file_content[x]);
-      }
+  if (c<nlines) {
+    c++;
+  } else {
+    for (x=1;x<=c;x++) {
+      file_content[x-1] = (char*) realloc(file_content[x-1], strlen(file_content[x]) * sizeof(char*));
+      strcpy(file_content[x-1], file_content[x]);
     }
-    i++;
   }
+  lines_read++;
+}
 
-  number_to_print = number_of_lines<i ? number_of_lines : i;
+void read_finished(void) {
+  int number_to_print, x;
+
+  number_to_print = nlines<lines_read ? nlines : lines_read; 
 
   for (x=0;x<number_to_print;x++) {
     printf("%s", file_content[x]);
@@ -70,3 +65,4 @@ void limit_stdin(int number_of_lines) {
 
   free(file_content);
 }
+

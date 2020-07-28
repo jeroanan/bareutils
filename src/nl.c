@@ -2,25 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "inc/process_stdin.h"
+
 #define NUMBER_WIDTH 6
 
+int i;
+void process_line(char *line, size_t length);
+
 int main(void) {
-  ssize_t read;
-  char* line = NULL;
-  size_t len = 0;
-  int i;
   i=1;
 
-  for (1;;) {
-    if ((read = getline(&line, &len, stdin)==-1)) {
-      break;
-    }
-    
-    printf("%*d  %s", NUMBER_WIDTH, i, line);
-    i++;
-  }
+  process_stdin(process_line, read_finished_do_nothing);
 
   return EXIT_SUCCESS;
 }
 
-
+void process_line(char *line, size_t length) {
+  printf("%*d  %s", NUMBER_WIDTH, i, line);
+  i++;
+}

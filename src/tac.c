@@ -2,31 +2,42 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "inc/process_stdin.h"
+
+char **buffer;
+int line_counter;
+
+void process_line(char *line, size_t len);
+void read_finished();
+
 int main(void) {
-  FILE *fp;
-  char *line = NULL;
-  size_t len = 0;
-  ssize_t read;
-  char** buffer;
-  int i,j;
 
-  i=0;
-  for (1;;) {
-    if ((read = getline(&line, &len, stdin)==-1)) {
-      break;
-    }
+  void (*process_func)(char*, size_t);
+  void (*read_finished_func)(void);
 
-    buffer = (char**) realloc(buffer, (i+1) * sizeof(char*));
-    buffer[i] = (char*) malloc(len * sizeof(char*));
-    strcpy(buffer[i], line);
-    i++;
-  }
+  process_func = process_line;
+  read_finished_func = read_finished;
 
-  for (j=i-1;j>=0;j--) {
+  process_stdin(process_func, read_finished_func);
+
+  return 0;
+}
+
+void process_line(char *line, size_t len) {
+  int i = line_counter;
+
+  buffer = (char**) realloc(buffer, (i+1) * sizeof(char*));
+  buffer[i] = (char*) malloc(len * sizeof(char*));
+  strcpy(buffer[i], line);
+  line_counter++;
+}
+
+void read_finished() {
+  int j;
+
+  for (j=line_counter-1;j>=0;j--) {
     printf("%s", buffer[j]);
     free(buffer[j]);
   }
   free(buffer);
-
-  return 0;
 }
